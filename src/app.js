@@ -1,0 +1,120 @@
+import { toolsRegistry } from "./modules/modules.js";
+
+// Theme switcher - see https://basecoatui.com/components/theme-switcher
+(() => {
+    try {
+    const stored = localStorage.getItem('themeMode');
+    if (stored ? stored === 'dark'
+                : matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.classList.add('dark');
+    }
+    } catch (_) {}
+
+    const apply = dark => {
+    document.documentElement.classList.toggle('dark', dark);
+    try { localStorage.setItem('themeMode', dark ? 'dark' : 'light'); } catch (_) {}
+    };
+
+    document.addEventListener('basecoat:theme', (event) => {
+    const mode = event.detail?.mode;
+    apply(mode === 'dark' ? true
+            : mode === 'light' ? false
+            : !document.documentElement.classList.contains('dark'));
+    });
+})();
+
+// Load tools on document load complete
+document.addEventListener('DOMContentLoaded', async () => {
+    const fetchPromises = toolsRegistry.map(async (tool) => {
+        try {
+            const response = await fetch(tool.module.template);
+            if (!response.ok) console.error(`Failed to load tool ${tool.id}:`);
+            const html = await response.text();
+
+            const wrapper = document.createElement('div');
+            wrapper.id = `tool-wrapper-${tool.id}`;
+            wrapper.innerHTML = html;
+            wrapper.setAttribute('tool-tags', tool.tags.join(','));
+
+            return {tool, node: wrapper};
+        } catch (err) {
+            console.error(`Failed to load tool ${tool.id}:`, err);
+        }
+    });
+
+    const toolContainer = document.getElementById('tools-container');
+    const toolFilterContainer = document.getElementById('tools-filter-container');
+    const loadedTools = await Promise.all(fetchPromises);
+    let filters = {};
+
+    for (const component of loadedTools) {
+        if (!component) return;
+
+        // Add child to container
+        toolContainer.appendChild(component.node);
+
+        // Extract tags to filters
+        for (const tag of component.tool.tags) {
+            if (tag in filters) filters[tag]++;
+            else filters[tag] = 1;
+        }
+
+        // Run init function
+        if (typeof component.tool.module.init === 'function') {
+            try {
+                component.tool.module.init();
+            } catch (err) {
+                console.error(`Failed to initialize tool ${component.tool.id}:`, err);
+            }
+        }
+    }   
+
+    // Add filters to popover
+    for (const tag in filters) {
+        allTags += tag;
+        const div = document.createElement('div');
+        div.classList = "flex items-start gap-2";
+        div.id = `tool-filter-${tag}`;
+        div.innerHTML = `
+        <input type="checkbox" id="${tag}" name="tag" class="input" value="${tag}" checked>
+        <label class="label" for="${tag}">${tag}</label>
+        <p class="label font-normal text-sm text-muted-foreground">(${filters[tag]} tool${filters[tag] > 1 ? 's' : ''})</p>`;
+        toolFilterContainer.appendChild(div);
+    }
+
+    // Update view on filters change
+    const filterForm = document.getElementById('tools-filter-container');
+    filterForm.addEventListener('change', (e) => {
+        const data = new FormData(filterForm);
+        const selectedFilters = data.getAll("tag");
+        updateToolsView(selectedFilters);
+    });
+    
+    // Create Lucide Icons
+    lucide.createIcons();
+});
+
+let allTags = [];
+
+function updateToolsView(filters=[]) {
+    const toolContainer = document.getElementById('tools-container');
+    const noneContainer = document.getElementById('tools-container-none');
+    let count = 0;
+    
+    for (const child of toolContainer.children) {
+        const tags = child.getAttribute('tool-tags').split(',');
+
+        if (tags.some(r => filters.includes(r))) {
+            child.classList.remove('hidden');
+            count++;
+        } else {
+            child.classList.add('hidden');
+        }
+    }
+
+    if (count == 0) {
+        noneContainer.classList.remove('hidden');
+    } else {
+        noneContainer.classList.add('hidden');
+    }
+}

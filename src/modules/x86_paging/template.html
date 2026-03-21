@@ -1,0 +1,101 @@
+<div id="x86-paging" class="card flex flex-col">
+    <header class="flex flex-col space-y-1.5">
+        <div class="flex flex-row self-stretch">
+            <div class="grow">
+                <h2 class="label text-xl">Address Converter</h2>
+            </div>
+            <div class="flex flex-row gap-1.5">
+                <span class="badge">
+                    <i data-lucide="cpu"></i>
+                    x86
+                </span>
+                <span class="badge">
+                    <i data-lucide="memory-stick"></i>
+                    Paging
+                </span>
+            </div>
+        </div>
+        <p class="text-muted-foreground text-sm">Visualize memory management concepts and address translation on x86 CPUs. Input a virtual address to see its breakdown into paging table indices or adjust individual indices to observe the resulting address.</p>
+    </header>
+    <section>
+        <form class="form grid gap-4">
+            <div class="gap-2 flex flex-row">
+                <!-- Paging Mode -->
+                <div class="grid gap-2">
+                    <label for="paging-mode">Paging Mode</label>
+                    <select id="paging-mode">
+                        <option value="32-bit-pae">32 bit (with PAE)</option>
+                        <option value="64-bit-4-levels">64 bit (with level-4 page tables)</option>
+                        <option value="64-bit-5-levels">64 bit (with level-5 page tables)</option>
+                    </select>
+                </div>
+                <!-- Virtual Address -->
+                <div class="grow grid gap-2">
+                    <label for="vaddr">Virtual Address</label>
+                    <input type="text" id="vaddr" placeholder="0xbabecafe" value="0x7fffc0000000">
+                </div>
+            </div>
+            <!-- Paging Indexes -->
+            <div class="gap-2 grid grid-cols-3">
+                <!-- PML5 Index -->
+                <div class="gap-2 grid">
+                    <label for="index-pml5">PML5 Index</label>
+                    <div role="group" class="button-group">
+                        <input type="number" id="index-pml5" value="255" max="511" min="0">
+                        <button class="btn-outline" disabled>0x0ff</button>
+                    </div>
+                </div>
+                <!-- PML4 Index -->
+                <div class="gap-2 grid">
+                    <label for="index-pml4">PML4 Index</label>
+                    <div role="group" class="button-group">
+                        <input type="number" id="index-pml4" value="511" max="511" min="0">
+                        <button class="btn-outline" disabled>0x1ff</button>
+                    </div>
+                </div>
+                <!-- PDPT Index -->
+                <div class="gap-2 grid">
+                    <label for="index-pdpt">PDPT Index</label>
+                    <div role="group" class="button-group">
+                        <input type="number" id="index-pdpt" value="255" max="511" min="0">
+                        <button class="btn-outline" disabled>0x0ff</button>
+                    </div>
+                </div>
+                <!-- PD Index -->
+                <div class="gap-2 grid">
+                    <label for="index-pd">PD Index</label>
+                    <div role="group" class="button-group">
+                        <input type="number" id="index-pd" value="255" max="511" min="0">
+                        <button class="btn-outline" disabled>0x0ff</button>
+                    </div>
+                </div>
+                <!-- PT Index -->
+                <div class="gap-2 grid">
+                    <label for="index-pt">PT Index</label>
+                    <div role="group" class="button-group">
+                        <input type="number" id="index-pt" value="255" max="511" min="0">
+                        <button class="btn-outline" disabled>0x0ff</button>
+                    </div>
+                </div>
+                <!-- Offset -->
+                <div class="gap-2 grid">
+                    <label for="page-offset">Page Offset</label>
+                    <div role="group" class="button-group">
+                        <input type="number" id="page-offset" value="255" max="4095" min="0">
+                        <button class="btn-outline" disabled>0xcafe</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+    <footer>
+        <!-- Resources -->
+        <h3 class="label text-muted-foreground mr-4">Resources</h3>
+        <div class="flex flex-row overflow-x-auto scrollbar">
+            <a href="https://wiki.osdev.org/Paging" target="_blank" class="badge-outline">
+                Paging (OSDev Wiki)
+                <i data-lucide="move-up-right"></i>
+            </a>
+        </div>
+    </footer>
+</div>
