@@ -1,0 +1,5 @@
+@import "tailwindcss";
+@import "basecoat-css";
+
+@source "./modules";
+@source "./modules/x86_paging";
