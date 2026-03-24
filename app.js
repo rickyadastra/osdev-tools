@@ -1,31 +1,36 @@
 import { toolsRegistry } from "./modules/modules.js";
 
+// Filter constants
+const LOCAL_STORAGE_FILTERS_KEY = 'osdev_tools_filters';
+const toolContainer = document.getElementById('tools-container');
+const toolFilterContainer = document.getElementById('tools-filter-container');
+const filterForm = document.getElementById('tools-filter-container');
+
 // Theme switcher - see https://basecoatui.com/components/theme-switcher
-(() => {
+function initThemeSwitcher() {
     try {
-    const stored = localStorage.getItem('themeMode');
-    if (stored ? stored === 'dark'
-                : matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.documentElement.classList.add('dark');
-    }
+        const stored = localStorage.getItem('themeMode');
+        if (stored ? stored === 'dark'
+                    : matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
     } catch (_) {}
-
+    
     const apply = dark => {
-    document.documentElement.classList.toggle('dark', dark);
-    try { localStorage.setItem('themeMode', dark ? 'dark' : 'light'); } catch (_) {}
+        document.documentElement.classList.toggle('dark', dark);
+        try { localStorage.setItem('themeMode', dark ? 'dark' : 'light'); } catch (_) {}
     };
-
+    
     document.addEventListener('basecoat:theme', (event) => {
-    const mode = event.detail?.mode;
-    apply(mode === 'dark' ? true
-            : mode === 'light' ? false
-            : !document.documentElement.classList.contains('dark'));
+        const mode = event.detail?.mode;
+        apply(mode === 'dark' ? true
+                : mode === 'light' ? false
+                : !document.documentElement.classList.contains('dark'));
     });
-})();
+}
 
-// Load tools on document load complete
-document.addEventListener('DOMContentLoaded', async () => {
-    const fetchPromises = toolsRegistry.map(async (tool) => {
+function getToolsFetchPromises() {
+    return toolsRegistry.map(async (tool) => {
         try {
             const response = await fetch(tool.module.template);
             if (!response.ok) console.error(`Failed to load tool ${tool.id}:`);
@@ -41,11 +46,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.error(`Failed to load tool ${tool.id}:`, err);
         }
     });
+}
 
-    const toolContainer = document.getElementById('tools-container');
-    const toolFilterContainer = document.getElementById('tools-filter-container');
-    const loadedTools = await Promise.all(fetchPromises);
-    let filters = {};
+async function showAndInitTools(filters) {
+    const loadedTools = await Promise.all(getToolsFetchPromises());
 
     for (const component of loadedTools) {
         if (!component) return;
@@ -68,10 +72,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
     }   
+}
+
+function initFilters(filters) {
+    const allTags = [];
 
     // Add filters to popover
     for (const tag in filters) {
-        allTags += tag;
+        allTags.push(tag);
+
         const div = document.createElement('div');
         div.classList = "flex items-start gap-2";
         div.id = `tool-filter-${tag}`;
@@ -82,19 +91,30 @@ document.addEventListener('DOMContentLoaded', async () => {
         toolFilterContainer.appendChild(div);
     }
 
-    // Update view on filters change
-    const filterForm = document.getElementById('tools-filter-container');
-    filterForm.addEventListener('change', (e) => {
-        const data = new FormData(filterForm);
-        const selectedFilters = data.getAll("tag");
-        updateToolsView(selectedFilters);
-    });
-    
-    // Create Lucide Icons
-    lucide.createIcons();
-});
+    // Load active filters
+    let storageTags = localStorage.getItem(LOCAL_STORAGE_FILTERS_KEY);
+    let activeTags = [];
 
-let allTags = [];
+    if (storageTags) {
+        activeTags = JSON.parse(storageTags);
+        const checkboxes = filterForm.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(cb => { cb.checked = activeTags.includes(cb.value); });
+    } else {
+        activeTags = allTags;
+    }
+
+    // Update view with active tags from storage
+    updateToolsView(activeTags);
+
+    // Update view on filters change
+    filterForm.addEventListener('change', () => {
+        const data = new FormData(filterForm);
+        const selectedTags = data.getAll("tag");
+
+        localStorage.setItem(LOCAL_STORAGE_FILTERS_KEY, JSON.stringify(selectedTags));
+        updateToolsView(selectedTags);
+    });
+}
 
 function updateToolsView(filters=[]) {
     const toolContainer = document.getElementById('tools-container');
@@ -118,3 +138,16 @@ function updateToolsView(filters=[]) {
         noneContainer.classList.add('hidden');
     }
 }
+
+// Load tools and init filters on document load complete
+document.addEventListener('DOMContentLoaded', async () => {
+    let filters = {};
+    
+    await showAndInitTools(filters);
+    initFilters(filters);
+    
+    // Create Lucide Icons
+    initThemeSwitcher();
+    lucide.createIcons();
+});
+
