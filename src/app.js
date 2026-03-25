@@ -38,13 +38,12 @@ function getToolsWrappers() {
             // Create tags dynamically
             let tagsHtml = tool.tags.map(tag => {
                 const tagData = tagsRegistry[tag];
-                const tagElement = document.createElement('span');
-
                 if (tagData === undefined) {
                     console.warn(`Tag '${tag}' is undefined`);
                     return '';
                 }
-
+                
+                const tagElement = document.createElement('span');
                 tagElement.innerHTML = `<i data-lucide="${tagData.icon}"></i>${tagData.text}`;
                 tagElement.classList = ['badge', tagData.colorClass, 
                     (tagData.darkColorClass ? `dark:${tagData.darkColorClass}` : '')].join(' ');
@@ -55,7 +54,8 @@ function getToolsWrappers() {
             // Create header part
             const header = document.createElement('header');
             header.classList = 'flex flex-col space-y-1.5';
-            header.innerHTML = `<div class="flex flex-row self-stretch">
+            header.innerHTML = `
+            <div class="flex flex-row self-stretch">
                 <div class="grow">
                     <h2 class="label text-xl">${tool.title}</h2>
                 </div>
@@ -110,12 +110,18 @@ function initFilters(filters) {
     for (const tag in filters) {
         allTags.push(tag);
 
+        const tagData = tagsRegistry[tag];
+        if (tagData === undefined) {
+            console.warn(`Tag '${tag}' is undefined`);
+            continue;
+        }
+
         const div = document.createElement('div');
         div.classList = "flex items-start gap-2";
         div.id = `tool-filter-${tag}`;
         div.innerHTML = `
         <input type="checkbox" id="${tag}" name="tag" class="input" value="${tag}" checked>
-        <label class="label" for="${tag}">${tag}</label>
+        <label class="label" for="${tag}">${tagsRegistry[tag].text}</label>
         <p class="label font-normal text-sm text-muted-foreground">(${filters[tag]} tool${filters[tag] > 1 ? 's' : ''})</p>`;
         toolFilterContainer.appendChild(div);
     }
