@@ -5,6 +5,8 @@ const LOCAL_STORAGE_FILTERS_KEY = 'osdev_tools_filters';
 const toolContainer = document.getElementById('tools-container');
 const toolFilterContainer = document.getElementById('tools-filter-container');
 const filterForm = document.getElementById('tools-filter-container');
+const filterResetBtn = document.getElementById('tools-filter-reset');
+const allTags = [];
 
 // Theme switcher - see https://basecoatui.com/components/theme-switcher
 function initThemeSwitcher() {
@@ -40,6 +42,7 @@ function getToolsFetchPromises() {
             wrapper.id = `tool-wrapper-${tool.id}`;
             wrapper.innerHTML = html;
             wrapper.setAttribute('tool-tags', tool.tags.join(','));
+            wrapper.classList = 'break-inside-avoid-column';
 
             return {tool, node: wrapper};
         } catch (err) {
@@ -75,8 +78,6 @@ async function showAndInitTools(filters) {
 }
 
 function initFilters(filters) {
-    const allTags = [];
-
     // Add filters to popover
     for (const tag in filters) {
         allTags.push(tag);
@@ -97,8 +98,7 @@ function initFilters(filters) {
 
     if (storageTags) {
         activeTags = JSON.parse(storageTags);
-        const checkboxes = filterForm.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach(cb => { cb.checked = activeTags.includes(cb.value); });
+        updateFilterCheckboxes(activeTags);
     } else {
         activeTags = allTags;
     }
@@ -114,6 +114,20 @@ function initFilters(filters) {
         localStorage.setItem(LOCAL_STORAGE_FILTERS_KEY, JSON.stringify(selectedTags));
         updateToolsView(selectedTags);
     });
+
+    filterResetBtn.addEventListener('click', () => {
+        // Check all checkboxes
+        updateFilterCheckboxes(allTags);
+        // Update view
+        updateToolsView(allTags);
+        // Save new filters
+        localStorage.setItem(LOCAL_STORAGE_FILTERS_KEY, JSON.stringify(allTags));
+    });
+}
+
+function updateFilterCheckboxes(filters) {
+    const checkboxes = filterForm.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(cb => { cb.checked = filters.includes(cb.value); });
 }
 
 function updateToolsView(filters=[]) {
@@ -150,4 +164,3 @@ document.addEventListener('DOMContentLoaded', async () => {
     initThemeSwitcher();
     lucide.createIcons();
 });
-
