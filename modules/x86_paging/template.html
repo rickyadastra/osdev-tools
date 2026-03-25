@@ -1,9 +1,11 @@
 <div id="x86-paging" class="card flex flex-col">
     <header class="flex flex-col space-y-1.5">
         <div class="flex flex-row self-stretch">
+            <!-- Title -->
             <div class="grow">
                 <h2 class="label text-xl">Address Converter</h2>
             </div>
+            <!-- Tags -->
             <div class="flex flex-row gap-1.5 select-none">
                 <span class="badge">
                     <i data-lucide="cpu"></i>
@@ -15,15 +17,16 @@
                 </span>
             </div>
         </div>
+        <!-- Description -->
         <p class="text-muted-foreground text-sm">Visualize memory management concepts and address translation on x86 CPUs. Input a virtual address to see its breakdown into paging table indices or adjust individual indices to observe the resulting address.</p>
     </header>
     <section>
-        <form class="form grid gap-4">
-            <div class="gap-2 flex flex-row">
+        <form class="form grid gap-6 md:gap-4">
+            <div class="gap-4 flex flex-col md:gap-2 md:flex-row">
                 <!-- Paging Mode -->
                 <div class="grid gap-2">
                     <label for="paging-mode">Paging Mode</label>
-                    <select id="paging-mode">
+                    <select id="paging-mode" class="w-auto">
                         <option value="32-bit-pae">32 bit (with PAE)</option>
                         <option value="64-bit-4-levels" selected>64 bit (with level-4 page tables)</option>
                         <option value="64-bit-5-levels">64 bit (with level-5 page tables)</option>
@@ -42,7 +45,7 @@
                 </label>
             </div>
             <!-- Paging Indexes -->
-            <div class="gap-2 grid grid-cols-3 pt-4">
+            <div class="gap-2 grid grid-cols-1 sm:grid-cols-3 pt-4">
                 <!-- PML5 Index -->
                 <div class="gap-2 grid relative">
                     <label for="index-pml5">PML5 Index</label>

@@ -15,56 +15,60 @@
     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div class="relative flex h-16 items-center justify-between">
             <!-- Title -->
-            <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+            <div class="flex flex-1 items-stretch justify-start">
                 <h1 class="flex shrink-0 items-center font-semibold">
                     OSDev Tools <span class="badge select-none ml-2">Beta</span>
                 </h1>
             </div>
             <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 gap-2">
-                <div id="tools-filter-div" class="popover">
-                <button id="tools-filterv-trigger" type="button" aria-expanded="false" aria-controls="tools-filter-popover" class="btn-outline size-8">
-                    <i data-lucide="settings-2"></i>
-                </button>
-                <div id="tools-filter-popover" data-popover data-side="left" aria-hidden="true" class="w-80">
-                    <div class="grid gap-4">
-                    <header class="grid gap-1.5">
-                        <p class="text-muted-foreground text-sm">Filter tools by architecture, type and more.</p>
-                    </header>
-                    <form id="tools-filter-container" class="grid gap-3">
-                        <!-- Tool filters container to be populated by app.js -->
-                    </form>
+                <div class="button-group">
+                    <!-- Theme toggle button -->
+                    <button type="button" aria-label="Toggle dark mode" data-tooltip="Toggle dark mode" data-side="left" onclick="document.dispatchEvent(new CustomEvent('basecoat:theme'))" class="btn-icon-outline size-8">
+                        <span class="hidden dark:block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" /></svg></span>
+                        <span class="block dark:hidden"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" /></svg></span>
+                    </button>
+                    <div id="tools-filter-div" class="popover">
+                        <button id="tools-filterv-trigger" type="button" aria-expanded="false" aria-controls="tools-filter-popover" class="btn-outline size-8">
+                            <i data-lucide="settings-2"></i>
+                        </button>
+                        <!-- Tool filter button -->
+                        <div id="tools-filter-popover" data-popover data-side="left" aria-hidden="true" class="w-80">
+                            <div class="grid gap-4">
+                            <header class="grid gap-1.5">
+                                <p class="text-muted-foreground text-sm">Filter tools by architecture, type and more.</p>
+                            </header>
+                            <form id="tools-filter-container" class="grid gap-3">
+                                <!-- Tool filters container to be populated by app.js -->
+                            </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                </div>
-                <!-- Theme toggle button -->
-                <button type="button" aria-label="Toggle dark mode" data-tooltip="Toggle dark mode" data-side="left" onclick="document.dispatchEvent(new CustomEvent('basecoat:theme'))" class="btn-icon-outline size-8">
-                    <span class="hidden dark:block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" /></svg></span>
-                    <span class="block dark:hidden"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" /></svg></span>
-                </button>
             </div>
         </div>
     </div>
     </nav>
 
     <main class="overflow-y-auto flex-1">
-        <div class="mx-auto max-w-6xl py-4 px-10 space-y-4">
+        <div class="mx-auto max-w-6xl py-2 px-2 sm:py-4 sm:px-10 space-y-4">
             <!-- Tools container to be populated by app.js -->
-            <div id="tools-container" class="grid grid-cols-1 xl:grid-cols-2 gap-4"></div>
+            <div id="tools-container" class="columns-1 xl:columns-2 gap-4 space-y-4"></div>
         </div>
         <!-- Tools container empty message -->
         <div id="tools-container-none" class="flex min-w-0 flex-1 flex-col items-center gap-6 p-6 text-center text-balance hidden">
             <header class="flex max-w-sm flex-col items-center gap-2 text-center">
                 <h3 class="text-lg font-medium tracking-tight">
                     Page Fault!</h3>
-                <p class="text-muted-foreground text-sm/relaxed">
+                <p class="text-muted-foreground text-sm/relaxed max-w-sm">
                 There are no tools for the filters you have chosen. Try changing them in the 
                 <i class="inline size-4" data-lucide="settings-2"></i> 
-                filter panel
+                filter panel or reset them.
                 </p>
+                <button class="btn-outline mt-4" id="tools-filter-reset">Reset filters</button>
             </header>
         </div>
         <!-- Page footer -->
-        <div class="flex flex-col items-center pt-10">
+        <div class="flex flex-col items-center pt-10 select-none">
             <p class="text-sm text-muted-foreground">
                 Made by 
                 <button class="btn-link p-0" onclick="window.open('https://github.com/rickyadastra', '_blank')">rickyadastra</button>
