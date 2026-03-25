@@ -1,4 +1,5 @@
-export const template = './modules/x86_paging/template.html?raw';
+import template from './template.html?raw';
+export { template };
 
 const B32_PAE = '32-bit-pae';
 const B64_4LV = '64-bit-4-levels';

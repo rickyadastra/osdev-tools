@@ -31,16 +31,12 @@ function initThemeSwitcher() {
     });
 }
 
-function getToolsFetchPromises() {
-    return toolsRegistry.map(async (tool) => {
+function getToolsWrappers() {
+    return toolsRegistry.map((tool) => {
         try {
-            const response = await fetch(tool.module.template);
-            if (!response.ok) console.error(`Failed to load tool ${tool.id}:`);
-            const html = await response.text();
-
             const wrapper = document.createElement('div');
             wrapper.id = `tool-wrapper-${tool.id}`;
-            wrapper.innerHTML = html;
+            wrapper.innerHTML = tool.module.template;
             wrapper.setAttribute('tool-tags', tool.tags.join(','));
             wrapper.classList = 'break-inside-avoid-column';
 
@@ -51,8 +47,8 @@ function getToolsFetchPromises() {
     });
 }
 
-async function showAndInitTools(filters) {
-    const loadedTools = await Promise.all(getToolsFetchPromises());
+function showAndInitTools(filters) {
+    const loadedTools = getToolsWrappers();
 
     for (const component of loadedTools) {
         if (!component) return;
