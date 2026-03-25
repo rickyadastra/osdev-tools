@@ -1,4 +1,5 @@
 import { toolsRegistry } from "./modules/modules.js";
+import { tagsRegistry } from "./modules/tags.js";
 
 // Filter constants
 const LOCAL_STORAGE_FILTERS_KEY = 'osdev_tools_filters';
@@ -34,11 +35,42 @@ function initThemeSwitcher() {
 function getToolsWrappers() {
     return toolsRegistry.map((tool) => {
         try {
+            // Create tags dynamically
+            let tagsHtml = tool.tags.map(tag => {
+                const tagData = tagsRegistry[tag];
+                const tagElement = document.createElement('span');
+
+                if (tagData === undefined) {
+                    console.warn(`Tag '${tag}' is undefined`);
+                    return '';
+                }
+
+                tagElement.innerHTML = `<i data-lucide="${tagData.icon}"></i>${tagData.text}`;
+                tagElement.classList = ['badge', tagData.colorClass, 
+                    (tagData.darkColorClass ? `dark:${tagData.darkColorClass}` : '')].join(' ');
+                
+                return tagElement.outerHTML; 
+            }).join('');
+
+            // Create header part
+            const header = document.createElement('header');
+            header.classList = 'flex flex-col space-y-1.5';
+            header.innerHTML = `<div class="flex flex-row self-stretch">
+                <div class="grow">
+                    <h2 class="label text-xl">${tool.title}</h2>
+                </div>
+                <div class="flex flex-row gap-1.5 select-none">
+                    ${tagsHtml}
+                </div>
+            </div>
+            <p class="text-muted-foreground text-sm">${tool.description}</p>`;
+
+            // Create tool wrapper card
             const wrapper = document.createElement('div');
-            wrapper.id = `tool-wrapper-${tool.id}`;
-            wrapper.innerHTML = tool.module.template;
+            wrapper.id = tool.id;
+            wrapper.classList = 'card flex flex-col break-inside-avoid-column';
             wrapper.setAttribute('tool-tags', tool.tags.join(','));
-            wrapper.classList = 'break-inside-avoid-column';
+            wrapper.innerHTML = header.outerHTML + tool.module.template;
 
             return {tool, node: wrapper};
         } catch (err) {
