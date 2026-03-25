@@ -45,8 +45,7 @@ function getToolsWrappers() {
                 
                 const tagElement = document.createElement('span');
                 tagElement.innerHTML = `<i data-lucide="${tagData.icon}"></i>${tagData.text}`;
-                tagElement.classList = ['badge', tagData.colorClass, 
-                    (tagData.darkColorClass ? `dark:${tagData.darkColorClass}` : '')].join(' ');
+                tagElement.classList = ['badge', tagData.classes].filter(s => s).join(' ');
                 
                 return tagElement.outerHTML; 
             }).join('');

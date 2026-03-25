@@ -2,19 +2,16 @@ export const tagsRegistry = {
     'x86': {
         text: 'x86',
         icon: 'cpu',
-        colorClass: '',
-        darkColorClass: ''
+        classes: ''
     },
     'paging': {
         text: 'Paging',
         icon: 'memory-stick',
-        colorClass: 'bg-blue-700',
-        darkColorClass: 'bg-blue-300'
+        classes: 'bg-blue-700 dark:bg-blue-300'
     },
     'exception': {
         text: 'Exception',
         icon: 'bomb',
-        colorClass: 'bg-red-700',
-        darkColorClass: 'bg-red-300'
+        classes: 'bg-red-700 dark:bg-red-300'
     }
 };
