@@ -4,20 +4,18 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "watch:css": "tailwindcss -i ./tw.css -o ./style.css --watch",
-    "serve": "live-server --port=8000",
-    "dev": "concurrently \"npm run watch:css\" \"npm run serve\"",
-    "build": "tailwindcss -i ./tw.css -o ./style.css --minify"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "keywords": [],
   "author": "rickyadastra",
   "license": "ISC",
   "devDependencies": {
+    "@tailwindcss/vite": "^4.2.2",
     "basecoat-css": "^0.3.11",
-    "concurrently": "^9.2.1",
     "copyfiles": "^2.4.1",
-    "live-server": "^1.2.2",
-    "@tailwindcss/cli": "^4.2.2",
-    "tailwindcss": "^4.2.2"
+    "tailwindcss": "^4.2.2",
+    "vite": "^8.0.2"
   }
 }
