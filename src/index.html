@@ -21,6 +21,10 @@
                 </h1>
             </div>
             <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 gap-2">
+                <button id="update-app-btn" type="button" class="btn-outline h-8 gap-1 text-green-600 dark:text-green-400 transition-discrete hidden"
+                    data-tooltip="A new version of the app is available" data-side="left">
+                    <i data-lucide="arrow-up"></i>Update
+                </button>
                 <div class="button-group">
                     <!-- Theme toggle button -->
                     <button type="button" aria-label="Toggle dark mode" data-tooltip="Toggle dark mode" data-side="left" onclick="document.dispatchEvent(new CustomEvent('basecoat:theme'))" class="btn-icon-outline size-8">

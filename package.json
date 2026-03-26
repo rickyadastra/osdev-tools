@@ -8,14 +8,15 @@
     "build": "vite build",
     "preview": "vite preview"
   },
+  "overrides": { "serialize-javascript": "^7.0.3" },
   "keywords": [],
   "author": "rickyadastra",
   "license": "ISC",
   "devDependencies": {
-    "@tailwindcss/vite": "^4.2.2",
     "basecoat-css": "^0.3.11",
-    "copyfiles": "^2.4.1",
     "tailwindcss": "^4.2.2",
+    "vite-plugin-pwa": "^1.2.0",
+    "@tailwindcss/vite": "^4.2.2",
     "vite": "^8.0.2"
   }
 }

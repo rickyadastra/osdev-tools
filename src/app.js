@@ -1,5 +1,6 @@
 import { toolsRegistry } from "./modules/modules.js";
 import { tagsRegistry } from "./modules/tags.js";
+import { registerSW } from 'virtual:pwa-register'
 
 // Filter constants
 const LOCAL_STORAGE_FILTERS_KEY = 'osdev_tools_filters';
@@ -7,7 +8,19 @@ const toolContainer = document.getElementById('tools-container');
 const toolFilterContainer = document.getElementById('tools-filter-container');
 const filterForm = document.getElementById('tools-filter-container');
 const filterResetBtn = document.getElementById('tools-filter-reset');
+const updateAppBtn = document.getElementById('update-app-btn');
 const allTags = [];
+
+const updateSW = registerSW({
+    onNeedRefresh() {
+        console.log('aggiorna');
+        updateAppBtn.classList.remove('hidden');
+        updateAppBtn.addEventListener('click', () => updateSW(true));
+    },
+    onOfflineReady() {
+        console.log('OSDev Tools PWA installed');
+    }
+});
 
 // Theme switcher - see https://basecoatui.com/components/theme-switcher
 function initThemeSwitcher() {
@@ -58,7 +71,7 @@ function getToolsWrappers() {
                 <div class="grow">
                     <h2 class="label text-xl">${tool.title}</h2>
                 </div>
-                <div class="flex flex-row gap-1.5 select-none">
+                <div class="flex flex-row flex-wrap flex-row-reverse gap-1.5 select-none">
                     ${tagsHtml}
                 </div>
             </div>
