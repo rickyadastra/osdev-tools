@@ -203,7 +203,7 @@ function updateToolsView(filters=[]) {
 document.addEventListener('DOMContentLoaded', async () => {
     let filters = {};
     
-    await showAndInitTools(filters);
+    showAndInitTools(filters);
     initFilters(filters);
     
     // Create Lucide Icons
