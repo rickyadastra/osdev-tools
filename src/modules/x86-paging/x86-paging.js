@@ -1,5 +1,5 @@
-import template from './template.html?raw';
-export { template };
+import content from './content.html?raw';
+export { content };
 
 const B32_PAE = '32-bit-pae';
 const B64_4LV = '64-bit-4-levels';
@@ -56,7 +56,7 @@ export function init() {
 
     vaddr.addEventListener('input', () => { updateAddressToIndices(); });  
     
-    console.log("x86 Paging tool loaded");
+    console.log("x86 address converter loaded");
 }
 
 function formatHexNumber(val, pads) {

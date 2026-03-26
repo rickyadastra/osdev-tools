@@ -1,5 +1,5 @@
-import * as x86PagingTool from './x86_paging/x86-paging.js';
-import * as x86PageFaultTool from './x86_page_fault/x86-page-fault.js';
+import * as x86PagingTool from './x86-paging/x86-paging.js';
+import * as x86PageFaultTool from './x86-page-fault/x86-page-fault.js';
 
 export const toolsRegistry = [
     {
@@ -14,6 +14,8 @@ export const toolsRegistry = [
     {
         id: 'x86-page-fault',
         tags: ['x86', 'paging', 'exception'],
+        title: 'Page Fault Error Analyzer',
+        description: 'Lorem Ipsum',
         module: x86PageFaultTool
     }
 ]

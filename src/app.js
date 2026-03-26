@@ -82,7 +82,7 @@ function getToolsWrappers() {
             wrapper.id = tool.id;
             wrapper.classList = 'card flex flex-col break-inside-avoid-column';
             wrapper.setAttribute('tool-tags', tool.tags.join(','));
-            wrapper.innerHTML = header.outerHTML + tool.module.template;
+            wrapper.innerHTML = header.outerHTML + tool.module.content;
 
             return {tool, node: wrapper};
         } catch (err) {

@@ -1,5 +1,5 @@
-import template from './template.html?raw';
-export { template };
+import content from './content.html?raw';
+export { content };
 
 export function init() {
     console.log('x86 page fault loaded');
