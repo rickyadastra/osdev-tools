@@ -16,10 +16,9 @@ const schema = [
     { name: 'P', extName: 'Present', desc: 'When set, the page fault was caused by a page-protection violation. When not set, it was caused by a non-present page.', type: 'flag' },
 ];
 
-export function init() {
+export function init(container) {
     console.log('x86 page fault loaded');
 
-    const container = document.getElementById('x86-page-fault');
     const bitfieldContainer = container.querySelector('#bitfield');
     const errContainer = container.querySelector('#error-code-div');
     const errVal = container.querySelector('#error-code');

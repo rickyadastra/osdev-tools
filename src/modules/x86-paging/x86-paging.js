@@ -15,8 +15,7 @@ let addrUppercase = false;
 let cachedOffset;
 let isUpdatingAddr = false;
 
-export function init() {
-    const container = document.getElementById('x86-paging');
+export function init(container) {
     modeSelector = container.querySelector('#paging-mode');
     uppercaseAddr = container.querySelector('#address-uppercase');
 

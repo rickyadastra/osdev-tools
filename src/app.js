@@ -120,7 +120,7 @@ function showAndInitTools(filters) {
         // Run init function
         if (typeof component.tool.module.init === 'function') {
             try {
-                component.tool.module.init();
+                component.tool.module.init(component.node);
             } catch (err) {
                 console.error(`Failed to initialize tool ${component.tool.id}:`, err);
             }
