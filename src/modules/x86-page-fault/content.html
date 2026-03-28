@@ -1,11 +1,32 @@
-<section>    
+<section>
+    <form class="form grid gap-6 md:gap-4">
+        <!-- Page Fault Error Code -->
+        <div id="error-code-div" class="gap-4 flex flex-col md:gap-2" data-side="bottom" data-align="start">
+            <label for="error-code">Error Code</label>
+            <input type="text" id="error-code" class="font-mono" placeholder="0x00000001">
+        </div>
+        <div class="gap-4 flex flex-col md:gap-2">
+            <p class="label">Breakdown</p>
+            <div id="bitfield"></div>
+            <div id="desc-div" class="alert">
+                <i data-lucide="info"></i>
+                <h2 id="desc-title">Click on a field to get more info</h2>
+                <section id="desc-body">
+                </section>
+            </div>
+        </div>
+    </form>
 </section>
 <footer>
     <!-- Resources -->
     <h3 class="label text-muted-foreground mr-4">Resources</h3>
     <div class="flex flex-row overflow-x-auto scrollbar gap-1">
-        <a href="#" target="_blank" class="badge-outline">
-            Name (Source)
+        <a href="https://wiki.osdev.org/Exceptions" target="_blank" class="badge-outline">
+            Exceptions (OSDev Wiki)
+            <i data-lucide="arrow-up-right" class="size-4"></i>
+        </a>
+        <a href="https://en.wikipedia.org/wiki/Software_Guard_Extensions" target="_blank" class="badge-outline">
+            SGX (Wikipedia)
             <i data-lucide="arrow-up-right" class="size-4"></i>
         </a>
     </div>

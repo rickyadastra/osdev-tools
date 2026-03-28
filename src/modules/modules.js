@@ -15,7 +15,9 @@ export const toolsRegistry = [
         id: 'x86-page-fault',
         tags: ['x86', 'paging', 'exception'],
         title: 'Page Fault Error Analyzer',
-        description: 'Lorem Ipsum',
+        description: 'This tool provides an interactive way to understand what the code pushed on the \
+        stack by a page fault means. Also remember that the CR2 register contains the virtual address \
+        which caused the page fault.',
         module: x86PageFaultTool
     }
 ]
