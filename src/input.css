@@ -38,3 +38,18 @@
     @apply dark:bg-sky-300/10 dark:hover:bg-sky-300/15 bg-sky-700/10 hover:bg-sky-700/15;
   }
 }
+
+@theme {
+  --animate-ping-button: ping-button 2s ease-out infinite;
+  
+  @keyframes ping-button {
+    0%,
+    80%,
+    100% {
+      box-shadow: 0 0 0 1px;
+    }
+    90% {
+      box-shadow: 0 0 0 2px;
+    }
+  }
+}
