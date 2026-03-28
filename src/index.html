@@ -73,12 +73,34 @@
             </header>
         </div>
         <!-- Page footer -->
-        <div class="flex flex-col items-center pt-10 select-none">
+        <div class="flex flex-col items-center pt-10 select-none pb-10">
             <p class="text-sm text-muted-foreground">
                 Made by 
-                <button class="btn-link p-0" onclick="window.open('https://github.com/rickyadastra', '_blank')">rickyadastra</button>
+                <button class="btn-link p-0 h-auto" onclick="window.open('https://github.com/rickyadastra', '_blank')">rickyadastra</button>
             </p>
         </div>
     </main>
+
+    <!-- Changelog dialog -->
+    <dialog id="dialog-changelog" class="dialog w-full sm:max-w-[425px] max-h-[612px]">
+        <div class="top-[11rem]">
+            <header class="flex flex-row items-center">
+                <i data-lucide="sparkles" class="size-5"></i>
+                <h2 id="changelog-title">What's new</h2>
+            </header>
+            <section class="text-md text-foreground">
+                <p id="changelog-body">Lorem Ipsum changes.</p>
+                <ul id="changelog-list" class="list-disc pl-5 space-y-0.5 pt-4 text-sm text-muted-foreground">
+                </ul>
+            </section>
+            <footer class="pt-2 justify-start items-baseline">
+                <p id="changelog-version" class="text-muted-foreground text-xs">0.1.0</p>
+            </footer>
+
+            <button id="changelog-close-btn" type="button" onclick="this.closest('dialog').close()">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+        </dialog>
 </body>
 </html>

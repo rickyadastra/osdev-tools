@@ -5,6 +5,23 @@ import { registerSW } from 'virtual:pwa-register'
 const toolContainer = document.getElementById('tools-container');
 const updateAppBtn = document.getElementById('update-app-btn');
 
+const changelogDialog = document.getElementById('dialog-changelog');
+const changelogCloseBtn = document.getElementById('changelog-close-btn');
+const changelogVersion = document.getElementById('changelog-version');
+const changelogBody = document.getElementById('changelog-body');
+const changelogList = document.getElementById('changelog-list');
+const LOCAL_STORAGE_VERSION_KEY = 'osdev_tools_version_seen';
+
+const changelog = {
+    version: '0.1.0',
+    desc: 'First public release of OSDev Tools.',
+    list: [
+        { text: 'Added x86 Address Converter tool' },
+        { text: 'Added x86 Page Fault Error Analyzer tool' },
+        { text: 'Available offline as a web app' },
+    ]
+};
+
 const updateSW = registerSW({
     onNeedRefresh() {
         console.log('aggiorna');
@@ -111,6 +128,45 @@ function showAndInitTools(filters) {
     }   
 }
 
+function showChangelog(updateVer = true) {
+    const seenVer = localStorage.getItem(LOCAL_STORAGE_VERSION_KEY);
+
+    if (!updateVer || seenVer !== changelog.version) {
+        // Set seen version if it's first time opening the app
+        if (seenVer === null) {
+            localStorage.setItem(LOCAL_STORAGE_VERSION_KEY, changelog.version);
+            return;
+        }
+
+        changelogVersion.textContent = changelog.version;
+        changelogBody.textContent = changelog.desc;
+    
+        changelog.list.forEach(l => {
+            const li = document.createElement('li');
+            li.innerHTML = l.text;
+    
+            if (l.author) {
+                if (l.authorLink) li.innerHTML += ` (<a href="${l.authorLink}" class="btn-link p-0 h-auto">${l.author}</a>)`;
+                else li.innerHTML += ` (${l.author})`;
+            }
+    
+            changelogList.appendChild(li);
+        });
+    
+        changelogDialog.showModal();
+    }
+}
+
+function closeChangelogDialog(updateVer = true) {
+    changelogDialog.close();
+    if (updateVer) localStorage.setItem(LOCAL_STORAGE_VERSION_KEY, changelog.version);
+}
+
+function addChangelogListeners() {
+    changelogDialog.addEventListener('click', (e) => { if (e.target === changelogDialog) closeChangelogDialog(); });
+    changelogCloseBtn.addEventListener('click', closeChangelogDialog);
+}
+
 // Load tools and init filters on document load complete
 document.addEventListener('DOMContentLoaded', async () => {
     let filters = {};
@@ -121,4 +177,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Create Lucide Icons
     initThemeSwitcher();
     lucide.createIcons();
+
+    showChangelog();
+    addChangelogListeners();
 });
