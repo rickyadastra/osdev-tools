@@ -154,32 +154,7 @@ export class Bitfield {
 
     init() {
         this.container.classList.add('@container');
-        const group = document.createElement('bitgroup');
-
-        const totalSize = this.schema.reduce((acc, field) => acc + (field.size || 1), 0);
-        let currentBit = totalSize - 1;
-        let firstField = true;
-        
-        this.schema.forEach(field => {
-            const size = field.size || 1;
-            
-            if (size === 1) {
-                const fieldEl = this.createSingleBitField(field, currentBit, '', firstField);
-                group.appendChild(fieldEl);
-
-                currentBit -= 1;
-            } else {
-                const fieldEls = this.createMultiBitFields(field, currentBit, '', firstField);
-                fieldEls.forEach(el => group.appendChild(el));
-                
-                currentBit -= size;
-            }
-
-            firstField = false;
-        });
-
-        this.container.appendChild(group);
-        this.update();
+        this.setSchema(this.schema);
     }
 
     createSingleBitField(field, bitIndex, extraClasses = '', isFirst = false) {
@@ -265,6 +240,36 @@ export class Bitfield {
 
     setValue(nvalue) {
         this.value = nvalue;
+        this.update();
+    }
+
+    setSchema(schema) {
+        this.container.innerHTML = '';
+        const group = document.createElement('bitgroup');
+
+        const totalSize = schema.reduce((acc, field) => acc + (field.size || 1), 0);
+        let currentBit = totalSize - 1;
+        let firstField = true;
+        
+        schema.forEach(field => {
+            const size = field.size || 1;
+            
+            if (size === 1) {
+                const fieldEl = this.createSingleBitField(field, currentBit, '', firstField);
+                group.appendChild(fieldEl);
+
+                currentBit -= 1;
+            } else {
+                const fieldEls = this.createMultiBitFields(field, currentBit, '', firstField);
+                fieldEls.forEach(el => group.appendChild(el));
+                
+                currentBit -= size;
+            }
+
+            firstField = false;
+        });
+
+        this.container.appendChild(group);
         this.update();
     }
 
