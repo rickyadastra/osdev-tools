@@ -17,7 +17,7 @@ const changelog = {
     desc: 'First public release of OSDev Tools.',
     list: [
         { text: 'Added x86 Address Converter tool' },
-        { text: 'Added x86 Page Fault Error Analyzer tool' },
+        { text: 'Added x86 Exception Error Analyzer tool' },
         { text: 'Available offline as a web app' },
     ]
 };

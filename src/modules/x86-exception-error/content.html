@@ -1,10 +1,21 @@
 <section>
     <form class="form grid gap-6 md:gap-4">
-        <!-- Page Fault Error Code -->
-        <div id="error-code-div" class="gap-4 flex flex-col md:gap-2" data-side="bottom" data-align="start">
-            <label for="error-code">Error Code</label>
-            <input type="text" id="error-code" class="font-mono" placeholder="0x00000001">
+        <div class="gap-4 flex flex-col md:gap-2 md:flex-row">
+            <!-- Error Type -->
+            <div class="grid gap-2">
+                <label for="exception-type">Type</label>
+                <select id="exception-type" class="w-auto">
+                    <option value="page-fault" selected>Page Fault</option>
+                    <option value="segment-selector">Segment Selector</option>
+                </select>
+            </div>
+            <!-- Error Code -->
+            <div id="error-code-div" class="grid gap-2 grow" data-side="bottom" data-align="start">
+                <label for="error-code">Error Code</label>
+                <input type="text" id="error-code" class="font-mono" placeholder="0x00000001">
+            </div>
         </div>
+        <!-- Breakdown -->
         <div class="gap-4 flex flex-col md:gap-2">
             <p class="label">Breakdown</p>
             <div id="bitfield"></div>

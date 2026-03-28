@@ -1,5 +1,5 @@
 import * as x86PagingTool from './x86-paging/x86-paging.js';
-import * as x86PageFaultTool from './x86-page-fault/x86-page-fault.js';
+import * as x86PageFaultTool from './x86-exception-error/x86-exception-error.js';
 
 export const toolsRegistry = [
     {
@@ -12,12 +12,13 @@ export const toolsRegistry = [
         module: x86PagingTool
     },
     {
-        id: 'x86-page-fault',
+        id: 'x86-exception-error',
         tags: ['x86', 'paging', 'exception'],
-        title: 'Page Fault Error Analyzer',
+        title: 'Exception Error Analyzer',
         description: 'This tool provides an interactive way to understand what the code pushed on the \
-        stack by a page fault means. Also remember that the CR2 register contains the virtual address \
-        which caused the page fault.',
+        stack by an exception means. Select the error type, input the value and see its breakdown in \
+        the area below. The Segment Selector error code is output by many exceptions, like General \
+        Protection Fault and Invalid TSS.',
         module: x86PageFaultTool
     }
 ]

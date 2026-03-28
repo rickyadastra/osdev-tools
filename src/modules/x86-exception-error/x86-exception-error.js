@@ -3,10 +3,10 @@ export { content };
 
 import { Bitfield } from '../common/bitfield';
 
-const schema = [
-    { name: 'Reserved', desc: 'Must be set to 0.', size: 16 },
+const pageFaultError = [
+    { name: 'Reserved', desc: 'Must be set to 0.', size: 16, type: 'reserved' },
     { name: 'SGX', extName: 'Software Guard Extensions', desc: 'When set, the fault was due to an SGX violation. The fault is unrelated to ordinary paging.', type: 'flag' },
-    { name: 'Reserved', desc: 'Must be set to 0.', size: 8 },
+    { name: 'Reserved', desc: 'Must be set to 0.', size: 8, type: 'reserved' },
     { name: 'SS', extName: 'Shadow Stack', desc: 'When set, the page fault was caused by a shadow stack access.', type: 'flag' },
     { name: 'PK', extName: 'Protection Key', desc: 'When set, the page fault was caused by a protection-key violation. The PKRU register (for user-mode accesses) or PKRS MSR (for supervisor-mode accesses) specifies the protection key rights.', type: 'flag' },
     { name: 'I', extName: 'Instruction Fetch', desc: 'When set, the page fault was caused by an instruction fetch. This only applies when the No-Execute bit is supported and enabled.', type: 'flag' },
@@ -16,17 +16,27 @@ const schema = [
     { name: 'P', extName: 'Present', desc: 'When set, the page fault was caused by a page-protection violation. When not set, it was caused by a non-present page.', type: 'flag' },
 ];
 
+const segmentSelector = [
+    { name: 'Reserved', desc: 'Must be set to 0.', size: 16, type: 'reserved' },
+    { name: 'Selector Index', desc: 'The index in the GDT, IDT or LDT.', size: 13, type: 'data' },
+    { name: 'TI', extName: 'Table Indicator', desc: 'When set, indicates the Selector Index refers to the LDT. When clear, refers to the GDT. Only valid if IDT bit is 0.', type: 'type' },
+    { name: 'IDT', extName: 'IDT Indicator', desc: 'When set, indicates the Selector Index refers to a gate descriptor in the IDT. When clear, refers to the GDT or the LDT depending on the Table Indicator.', type: 'type' },
+    { name: 'EXT', extName: 'External', desc: 'When set, the exception originated externally to the processor.', type: 'flag' },
+
+];
+
 export function init(container) {
-    console.log('x86 page fault loaded');
+    console.log('x86 exception error loaded');
 
     const bitfieldContainer = container.querySelector('#bitfield');
     const errContainer = container.querySelector('#error-code-div');
     const errVal = container.querySelector('#error-code');
+    const excType = container.querySelector('#exception-type');
 
     const descTitle = container.querySelector('#desc-title');
     const descBody = container.querySelector('#desc-body');
 
-    const bitfield = new Bitfield(bitfieldContainer, schema, {
+    const bitfield = new Bitfield(bitfieldContainer, pageFaultError, {
         initialValue: 0x00000001,
         onClick: (field) => {
             const single = field.to == field.from;
@@ -34,6 +44,21 @@ export function init(container) {
 
             descTitle.textContent = `${name} - bit${!single ? 's' : ''} ${field.to}${!single ? `:${field.from}` : ''}`;
             descBody.textContent = field.desc ?? '';
+        }
+    });
+
+    excType.addEventListener('change', (e) => {
+        e.target.ariaInvalid = false;
+        
+        switch (e.target.value) {
+            case 'page-fault':
+                bitfield.setSchema(pageFaultError);
+                break;
+            case 'segment-selector':
+                bitfield.setSchema(segmentSelector);
+                break;
+            default:
+                e.target.ariaInvalid = true;
         }
     });
 

@@ -4,6 +4,16 @@
 @source "./modules";
 @source "./modules/x86_paging";
 
+@utility bg-stripes {
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    color-mix(in hsl, var(--color-foreground), transparent 97%) 10px,
+    color-mix(in hsl, var(--color-foreground), transparent 97%) 15px
+  );
+}
+
 @layer components {
   bitgroup {
     @apply grid grid-cols-8 @xl:grid-cols-16 @4xl:grid-cols-32 overflow-clip
@@ -36,6 +46,15 @@
 
   .bitfield-addr {
     @apply dark:bg-sky-300/10 dark:hover:bg-sky-300/15 bg-sky-700/10 hover:bg-sky-700/15;
+  }
+
+  .bitfield-reserved {
+    @apply bg-stripes hover:bg-foreground/5;
+  }
+
+  .bitfield-type {
+    @apply dark:bg-violet-300/10 dark:hover:bg-violet-300/15 dark:text-violet-300
+      bg-violet-700/10 hover:bg-violet-700/15 text-violet-700;
   }
 }
 
