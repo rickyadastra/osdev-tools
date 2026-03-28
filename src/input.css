@@ -3,3 +3,38 @@
 
 @source "./modules";
 @source "./modules/x86_paging";
+
+@layer components {
+  bitgroup {
+    @apply grid grid-cols-8 @xl:grid-cols-16 @4xl:grid-cols-32 overflow-clip
+      border border-1 border-foreground/20 rounded-md divide-x divide-y select-none;
+  }
+
+  bitfield {
+    @apply bg-foreground/3 p-2 text-center font-medium text-xs justify-center hover:bg-foreground/10 
+      duration-150 flex-col truncate;
+  }
+
+  .bitfield-bit {
+    @apply relative text-xs text-muted-foreground font-normal grow -mb-0.5 first:text-start 
+    last:text-end only:text-center;
+  }
+
+  .bitfield-value {
+    @apply font-normal text-lg text-foreground;
+  }
+
+  .bitfield-data {
+    @apply dark:bg-green-300/10 dark:hover:bg-green-300/15 dark:text-green-300
+      bg-green-700/10 hover:bg-green-700/15 text-green-700;
+  }
+
+  .bitfield-flag {
+    @apply dark:bg-amber-300/10 dark:hover:bg-amber-300/15 dark:text-amber-300
+      bg-amber-700/10 hover:bg-amber-700/15 text-amber-700;
+  }
+
+  .bitfield-addr {
+    @apply dark:bg-sky-300/10 dark:hover:bg-sky-300/15 bg-sky-700/10 hover:bg-sky-700/15;
+  }
+}
