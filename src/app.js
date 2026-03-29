@@ -18,7 +18,7 @@ const changelog = {
     list: [
         { text: 'Added x86 Address Converter tool' },
         { text: 'Added x86 Exception Error Analyzer tool' },
-        { text: 'Available offline as a web app' },
+        { text: 'Available as an offline web app' },
     ]
 };
 
