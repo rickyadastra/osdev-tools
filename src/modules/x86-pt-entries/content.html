@@ -1,0 +1,40 @@
+<section>
+    <div class="form grid gap-6 md:gap-4">
+        <div class="gap-4 flex flex-col md:gap-2 md:flex-row">
+            <!-- Page Entry Type -->
+            <div class="grid gap-2">
+                <label for="page-entry-type">Entry Type</label>
+                <select id="page-entry-type" class="w-auto">
+                    <option value="pte" selected>Page Table</option>
+                    <option value="pde">Normal Page Directory (or above)</option>
+                    <option value="huge-pde">Huge Page Directory (2MB)</option>
+                    <option value="huge-pdpte">Huge Page Directory Pointer Table (1GB)</option>
+                </select>
+            </div>
+            <!-- Physical Address Length -->
+            <div id="paddr-len-div" class="grid gap-2 grow" data-side="bottom" data-align="start">
+                <label for="paddr-len-value" class="mr-4 gap-1 w-fit" data-tooltip="Physical address width in bits">
+                    Physical Address Width
+                    <i data-lucide="circle-question-mark" class="size-4 text-muted-foreground"></i>
+                </label>
+                <input type="number" id="paddr-len-value" class="font-mono" max="52" min="32" placeholder="52" value="52">
+            </div>
+        </div>
+        <!-- Page Entry Value -->
+        <div id="page-entry-value-div" class="grid gap-2 grow" data-side="bottom" data-align="start">
+            <label for="page-entry-value">Value</label>
+            <input type="text" id="page-entry-value" class="font-mono" placeholder="0x00000001">
+        </div>
+        <BitfieldComponent></BitfieldComponent>
+    </div>
+</section>
+<footer>
+    <!-- Resources -->
+    <h3 class="label text-muted-foreground mr-4">Resources</h3>
+    <div class="flex flex-row overflow-x-auto scrollbar gap-1">
+        <a href="https://wiki.osdev.org/Paging" target="_blank" class="badge-outline">
+            Paging (OSDev Wiki)
+            <i data-lucide="arrow-up-right" class="size-4"></i>
+        </a>
+    </div>
+</footer>

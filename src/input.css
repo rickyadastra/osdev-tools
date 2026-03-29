@@ -44,8 +44,9 @@
       bg-amber-700/10 hover:bg-amber-700/15 text-amber-700;
   }
 
-  .bitfield-addr {
-    @apply dark:bg-sky-300/10 dark:hover:bg-sky-300/15 bg-sky-700/10 hover:bg-sky-700/15;
+  .bitfield-address {
+    @apply dark:bg-sky-300/10 dark:hover:bg-sky-300/15 dark:text-sky-300
+      bg-sky-700/10 hover:bg-sky-700/15 text-sky-700;
   }
 
   .bitfield-reserved {
