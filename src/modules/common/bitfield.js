@@ -157,14 +157,14 @@ export class Bitfield {
         this.setSchema(this.schema);
     }
 
-    createSingleBitField(field, bitIndex, extraClasses = '', isFirst = false) {
+    createSingleBitField(field, bitIndex, extraClasses = '', isFirst = false, from = null, to = null) {
         const fieldEl = document.createElement('bitfield');
         extraClasses.split(' ').filter(String).forEach(c => fieldEl.classList.add(c));
         if (isFirst) fieldEl.classList += ' ' + getColStartClasses(bitIndex);
         if (field.type !== undefined) fieldEl.classList.add(`bitfield-${field.type}`);
         if (this.onClick) {
             fieldEl.classList.add('cursor-pointer');
-            fieldEl.addEventListener('click', () => this.onClick({...field, from: bitIndex, to: bitIndex}));
+            fieldEl.addEventListener('click', () => this.onClick({...field, from: from ?? bitIndex, to: to ?? bitIndex}));
         }
 
         fieldEl.innerHTML = `
@@ -178,7 +178,7 @@ export class Bitfield {
     }
 
     createMultiBitFields(field, bitIndex, extraClasses = '', isFirst = false) {
-        if (field.size == 1) return [this.createSingleBitField(field, bitIndex, extraClasses, isFirst)];
+        if (field.size == 1) return [this.createSingleBitField(field, bitIndex, extraClasses, isFirst, field.from, field.to)];
 
         const fit8 = field.size <= 8 && fitGroup(bitIndex, bitIndex-field.size+1, 8);
         const fit16 = fit8 || (field.size <= 16 && fitGroup(bitIndex, bitIndex-field.size+1, 16));
@@ -194,7 +194,7 @@ export class Bitfield {
             const fieldEl = createMultibitField(field, bitIndex, fullClasses);
             fields.push(fieldEl);
             this.bitElements.push({elem: fieldEl, from: bitIndex, to: bitIndex-field.size+1});
-            if (this.onClick) fieldEl.addEventListener('click', () => this.onClick({...field, from: bitIndex, to: bitIndex-field.size+1}));
+            if (this.onClick) fieldEl.addEventListener('click', () => this.onClick({...field, from: field.from ?? bitIndex, to: field.to ?? bitIndex-field.size+1}));
 
         } else if (fit16) { // Field fits 16 bits but not 8, need split    
             const remainder = bitIndex%8 + 1;
@@ -203,12 +203,12 @@ export class Bitfield {
             const fieldEl = createMultibitField(field, bitIndex, `${fullClasses} hidden @xl:flex`);
             fields.push(fieldEl);
             this.bitElements.push({elem: fieldEl, from: bitIndex, to: bitIndex-field.size+1});
-            if (this.onClick) fieldEl.addEventListener('click', () => this.onClick({...field, from: bitIndex, to: bitIndex-field.size+1}));
+            if (this.onClick) fieldEl.addEventListener('click', () => this.onClick({...field, from: field.from ?? bitIndex, to: field.to ?? bitIndex-field.size+1}));
 
             // Split field recursively
-            this.createMultiBitFields({...field, size: remainder}, bitIndex, `${extraClasses} @xl:hidden`, isFirst)
+            this.createMultiBitFields({...field, from: field.from ?? bitIndex, to: field.to ?? bitIndex-field.size+1, size: remainder}, bitIndex, `${extraClasses} @xl:hidden`, isFirst)
                 .forEach(e => fields.push(e));
-            this.createMultiBitFields({...field, size: field.size-remainder}, bitIndex-remainder, `${extraClasses} @xl:hidden`, isFirst)
+            this.createMultiBitFields({...field, from: field.from ?? bitIndex, to: field.to ?? bitIndex-field.size+1, size: field.size-remainder}, bitIndex-remainder, `${extraClasses} @xl:hidden`, isFirst)
                 .forEach(e => fields.push(e));
 
         } else if (fit32) { // Field fits 32 bits but not 8 nor 16, need split
@@ -218,20 +218,20 @@ export class Bitfield {
             const fieldEl = createMultibitField(field, bitIndex, `${fullClasses} hidden @4xl:flex`);
             fields.push(fieldEl);
             this.bitElements.push({elem: fieldEl, from: bitIndex, to: bitIndex-field.size+1});
-            if (this.onClick) fieldEl.addEventListener('click', () => this.onClick({...field, from: bitIndex, to: bitIndex-field.size+1}));
+            if (this.onClick) fieldEl.addEventListener('click', () => this.onClick({...field, from: field.from ?? bitIndex, to: field.to ?? bitIndex-field.size+1}));
 
             // And split recursively
-            this.createMultiBitFields({...field, size: remainder}, bitIndex, `${extraClasses} @4xl:hidden`, isFirst)
+            this.createMultiBitFields({...field, from: field.from ?? bitIndex, to: field.to ?? bitIndex-field.size+1, size: remainder}, bitIndex, `${extraClasses} @4xl:hidden`, isFirst)
                 .forEach(e => fields.push(e));
-            this.createMultiBitFields({...field, size: field.size-remainder}, bitIndex-remainder, `${extraClasses} @4xl:hidden`, isFirst)
+            this.createMultiBitFields({...field, from: field.from ?? bitIndex, to: field.to ?? bitIndex-field.size+1, size: field.size-remainder}, bitIndex-remainder, `${extraClasses} @4xl:hidden`, isFirst)
                 .forEach(e => fields.push(e));
         
         } else { // Every field larger than 32 bits needs split
             const remainder = bitIndex%32 + 1;
 
-            this.createMultiBitFields({...field, size: remainder}, bitIndex, `${extraClasses}`, isFirst)
+            this.createMultiBitFields({...field, from: field.from ?? bitIndex, to: field.to ?? bitIndex-field.size+1, size: remainder}, bitIndex, `${extraClasses}`, isFirst)
                 .forEach(e => fields.push(e));
-            this.createMultiBitFields({...field, size: field.size-remainder}, bitIndex-remainder, `${extraClasses}`, isFirst)
+            this.createMultiBitFields({...field, from: field.from ?? bitIndex, to: field.to ?? bitIndex-field.size+1, size: field.size-remainder}, bitIndex-remainder, `${extraClasses}`, isFirst)
                 .forEach(e => fields.push(e));
         }
 
@@ -277,16 +277,21 @@ export class Bitfield {
         this.bitElements.forEach((field) => {
             const valueSpan = field.elem.querySelector('.bitfield-value');
             const len = field.from - field.to + 1;
-            const mask = ((1n << BigInt(len)) - 1n) << BigInt(field.to);
-
             const isHex = len >= 8;
-            const text = ((this.value & mask) >> BigInt(field.to))
+
+            const text = formatForField(this.value, field.from, field.to)
                 .toString(isHex ? 16 : 2)
                 .padStart(isHex ? len / 4 : len, '0');
 
             valueSpan.innerHTML = `${isHex ? '<span class="text-foreground/30 text-sm">0x</span>' : ''}${text}`;
         });
     }
+}
+
+function formatForField(val, from, to) {
+    const len = from - to + 1;
+    const mask = ((1n << BigInt(len)) - 1n) << BigInt(to);
+    return ((val & mask) >> BigInt(to));
 }
 
 function fitGroup(num, num2, size) {
@@ -313,3 +318,5 @@ function createMultibitField(field, bitIndex, extraClasses = '') {
 
     return fieldEl;
 }
+
+export { formatForField };
