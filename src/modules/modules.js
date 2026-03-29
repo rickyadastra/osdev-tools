@@ -1,5 +1,6 @@
 import * as x86PagingTool from './x86-paging/x86-paging.js';
 import * as x86PageFaultTool from './x86-exception-error/x86-exception-error.js';
+import * as x86PageTableEntriesTool from './x86-pt-entries/x86-pt-entries.js';
 
 export const toolsRegistry = [
     {
@@ -20,5 +21,14 @@ export const toolsRegistry = [
         the area below. The Segment Selector error code is output by many exceptions, like General \
         Protection Fault and Invalid TSS.',
         module: x86PageFaultTool
+    },
+    {
+        id: 'x86-pt-entries',
+        tags: ['x86', 'paging'],
+        title: 'Page Table Entry Visualizer',
+        description: 'Visualize page table entries with an interactive bitfield breakdown. Check flags, \
+        available bits and the physical frame number. The Physical Address Width varies between different \
+        machines and extensions: if you\'re unsure, leave it blank or use the default 52 bits.',
+        module: x86PageTableEntriesTool
     }
 ]
