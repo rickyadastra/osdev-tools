@@ -4,6 +4,7 @@ import { registerSW } from 'virtual:pwa-register'
 
 const toolContainer = document.getElementById('tools-container');
 const updateAppBtn = document.getElementById('update-app-btn');
+const footerVersion = document.getElementById('footer-version');
 
 const changelogDialog = document.getElementById('dialog-changelog');
 const changelogCloseBtn = document.getElementById('changelog-close-btn');
@@ -167,6 +168,10 @@ function addChangelogListeners() {
     changelogCloseBtn.addEventListener('click', closeChangelogDialog);
 }
 
+function setFooterVersion() {
+    footerVersion.innerText = `Version ${changelog.version}`;
+}
+
 // Load tools and init filters on document load complete
 document.addEventListener('DOMContentLoaded', async () => {
     let filters = {};
@@ -180,4 +185,5 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     showChangelog();
     addChangelogListeners();
+    setFooterVersion();
 });
