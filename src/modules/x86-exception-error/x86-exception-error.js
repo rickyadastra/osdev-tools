@@ -1,8 +1,7 @@
 import content from './content.html?raw';
 export { content };
 
-import { Bitfield, formatForField } from '../common/bitfield';
-import { setClipboard } from '../common/common';
+import { BitfieldComponent } from '../common/bitfield-component';
 
 const pageFaultError = [
     { name: 'Reserved', desc: 'Must be set to 0.', size: 16, type: 'reserved' },
@@ -26,50 +25,26 @@ const segmentSelector = [
 
 ];
 
-let curField;
-let container;
-
-export function init(c) {
+export function init(container) {
     console.log('x86 exception error loaded');
 
-    container = c;
-    const bitfieldContainer = container.querySelector('#bitfield');
+    const bitfieldComponent = new BitfieldComponent(container.querySelector('BitfieldComponent'), {
+        schema: pageFaultError
+    });
+
     const errContainer = container.querySelector('#error-code-div');
     const errVal = container.querySelector('#error-code');
     const excType = container.querySelector('#exception-type');
-
-    const descTitle = container.querySelector('#desc-title');
-    const descBody = container.querySelector('#desc-body');
-    const descValue = container.querySelector('#desc-value');
-
-    const copyHexBtn = container.querySelector('#copy-hex-btn');
-    const copyDecBtn = container.querySelector('#copy-dec-btn');
-    const copyBinBtn = container.querySelector('#copy-bin-btn');
-
-    const bitfield = new Bitfield(bitfieldContainer, pageFaultError, {
-        initialValue: 0x00000001,
-        onClick: (field) => {
-            const size = field.from - field.to + 1;
-            const single = size === 1;
-            const name = field.extName ?? field.name;
-
-            descTitle.textContent = `${name} - bit${!single ? 's' : ''} ${field.to}${!single ? `:${field.from}` : ''}`;
-            descBody.textContent = field.desc ?? '';
-            
-            updateFieldDescValue(field);
-            curField = field;
-        }
-    });
 
     excType.addEventListener('change', (e) => {
         e.target.ariaInvalid = false;
         
         switch (e.target.value) {
             case 'page-fault':
-                bitfield.setSchema(pageFaultError);
+                bitfieldComponent.setSchema(pageFaultError);
                 break;
             case 'segment-selector':
-                bitfield.setSchema(segmentSelector);
+                bitfieldComponent.setSchema(segmentSelector);
                 break;
             default:
                 e.target.ariaInvalid = true;
@@ -77,40 +52,13 @@ export function init(c) {
     });
 
     errVal.addEventListener('input', () => {
-        errContainer.removeAttribute('data-tooltip');
         try {
-            const val = BigInt(errVal.value);
-            bitfield.setValue(val);
+            errContainer.removeAttribute('data-tooltip');
             errVal.ariaInvalid = false;
-            if (curField) updateFieldDescValue(curField);
+            bitfieldComponent.setValue(BigInt(errVal.value));
         } catch (err) {
             errVal.ariaInvalid = true;
             errContainer.setAttribute('data-tooltip', "Invalid hexadecimal value");
         }
     });
-
-    copyHexBtn.addEventListener('click', () => { setClipboard(descValue.value); });
-    copyDecBtn.addEventListener('click', () => { setClipboard(BigInt(descValue.value).toString()); });
-    copyBinBtn.addEventListener('click', () => { setClipboard(BigInt(descValue.value).toString(2)); });
-}
-
-function updateFieldDescValue(field) {
-    const descValueDiv = container.querySelector('#desc-value-div');
-    const descValue = container.querySelector('#desc-value');
-    const errVal = container.querySelector('#error-code');
-    const single = field.from == field.to;
-    
-    descValue.value = '';
-
-    if (!single && field.type != 'reserved') {
-        try {
-            const val = BigInt(errVal.value);
-            const fieldVal = formatForField(val, field.from, field.to);
-            descValueDiv.classList.remove('hidden');
-            descValue.value = `0x${fieldVal.toString(16)}`;
-        } catch (_) {}
-
-    } else {
-        descValueDiv.classList.add('hidden');
-    }
 }

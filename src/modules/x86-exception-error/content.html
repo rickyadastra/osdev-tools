@@ -15,28 +15,7 @@
                 <input type="text" id="error-code" class="font-mono" placeholder="0x00000001">
             </div>
         </div>
-        <!-- Breakdown -->
-        <div class="gap-4 flex flex-col md:gap-2">
-            <div class="grid gap-2">
-                <p class="label">Breakdown</p>
-                <div id="bitfield"></div>
-            </div>
-            <div id="desc-div" class="alert">
-                <i data-lucide="info"></i>
-                <h2 id="desc-title">Click on a field to get more info</h2>
-                <section>
-                    <div id="desc-body"></div>
-                    <div id="desc-value-div" class="flex flex-row w-full hidden">
-                        <div class="button-group grow">
-                            <input id="desc-value" class="input h-8 rounded-r-none grow text-sm" type="text" placeholder="Field value" readonly>
-                            <button id="copy-hex-btn" class="btn-outline size-8" data-side="bottom" data-tooltip="Copy Hex"><i data-lucide="copy"></i></button>
-                            <button id="copy-dec-btn" class="btn-outline size-8" data-side="bottom" data-tooltip="Copy Decimal"><i data-lucide="hash"></i></button>
-                            <button id="copy-bin-btn" class="btn-outline size-8" data-side="bottom" data-tooltip="Copy Binary"><i data-lucide="binary"></i></button>
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </div>
+        <BitfieldComponent></BitfieldComponent>
     </div>
 </section>
 <footer>
