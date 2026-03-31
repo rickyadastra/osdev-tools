@@ -141,6 +141,7 @@ function showChangelog(updateVer = true) {
 
         changelogVersion.textContent = changelog.version;
         changelogBody.textContent = changelog.desc;
+        changelogList.innerHTML = '';
     
         changelog.list.forEach(l => {
             const li = document.createElement('li');
@@ -170,6 +171,7 @@ function addChangelogListeners() {
 
 function setFooterVersion() {
     footerVersion.innerText = `Version ${changelog.version}`;
+    footerVersion.addEventListener('click', () => showChangelog(false));
 }
 
 // Load tools and init filters on document load complete
