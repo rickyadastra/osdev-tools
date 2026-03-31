@@ -5,3 +5,6 @@
 - Added x86 Address Converter tool
 - Added x86 Exception Error Analyzer tool
 - Available as an offline web app
+
+# 0.2.0
+- Added x86 Page Table Entry Visualizer tool
