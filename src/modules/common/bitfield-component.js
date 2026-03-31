@@ -38,6 +38,7 @@ export class BitfieldComponent {
 
     setSchema(schema) {
         this.bitfield.setSchema(schema);
+        this.descField = null;
     }
 
     setValue(value) {
