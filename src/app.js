@@ -18,12 +18,13 @@ const LOCAL_STORAGE_LAYOUT_MODE = 'osdev_tools_layout';
 let layout = 'columns';
 
 const changelog = {
-    version: '0.1.0',
-    desc: 'First public release of OSDev Tools.',
+    version: '0.2.0',
+    desc: 'A new tool, layout options, various improvements and fixes.',
     list: [
-        { text: 'Added x86 Address Converter tool' },
-        { text: 'Added x86 Exception Error Analyzer tool' },
-        { text: 'Available as an offline web app' },
+        { text: 'Added x86 Page Table Entry Visualizer tool' },
+        { text: 'Added a toggle button to switch between two-column and single-column layout modes' },
+        { text: 'Footer version is now a button: clicking it will show current version\'s changelog' },
+        { text: 'Bitfield logic and layout fixes' },
     ]
 };
 
