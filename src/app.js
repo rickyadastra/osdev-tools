@@ -13,6 +13,10 @@ const changelogBody = document.getElementById('changelog-body');
 const changelogList = document.getElementById('changelog-list');
 const LOCAL_STORAGE_VERSION_KEY = 'osdev_tools_version_seen';
 
+const layoutToggleBtn = document.getElementById('layout-toggle-btn');
+const LOCAL_STORAGE_LAYOUT_MODE = 'osdev_tools_layout';
+let layout = 'columns';
+
 const changelog = {
     version: '0.1.0',
     desc: 'First public release of OSDev Tools.',
@@ -174,6 +178,41 @@ function setFooterVersion() {
     footerVersion.addEventListener('click', () => showChangelog(false));
 }
 
+function setLayoutToggle(_layout) {
+    console.log(_layout);
+    const layoutToggleCols = document.getElementById('layout-toggle-columns');
+    const layoutToggleWide = document.getElementById('layout-toggle-wide');
+    
+    switch (_layout) {
+        case 'wide':
+            toolContainer.classList.remove('xl:columns-2');
+            toolContainer.classList.add('xl:columns-1');
+            layoutToggleCols.classList.remove('hidden');
+            layoutToggleWide.classList.add('hidden');
+            break;
+            
+        case 'columns':
+        default:
+            toolContainer.classList.remove('xl:columns-1');
+            toolContainer.classList.add('xl:columns-2');
+            layoutToggleCols.classList.add('hidden');
+            layoutToggleWide.classList.remove('hidden');
+            break;
+    }
+
+    layout = _layout;
+    localStorage.setItem(LOCAL_STORAGE_LAYOUT_MODE, layout);
+}
+
+function initLayoutToggle() {
+    layout = localStorage.getItem(LOCAL_STORAGE_LAYOUT_MODE) ?? 'columns';
+    setLayoutToggle(layout);
+
+    layoutToggleBtn.addEventListener('click', () => {
+        setLayoutToggle((layout === 'columns') ? 'wide' : 'columns');
+    });
+}
+
 // Load tools and init filters on document load complete
 document.addEventListener('DOMContentLoaded', async () => {
     let filters = {};
@@ -181,8 +220,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     showAndInitTools(filters);
     initFilters(filters);
     
-    // Create Lucide Icons
     initThemeSwitcher();
+    initLayoutToggle();
+
+    // Create Lucide Icons
     lucide.createIcons();
 
     showChangelog();
