@@ -4,11 +4,13 @@ OSDev Tools is an **offline-ready**, **responsive** and **data-driven** PWA feat
 
 > Try it [here](https://rickyadastra.github.io/osdev-tools/)!
 
+## Tools
 Currently, it features the following tools:
 - **x86 Address Converter** to translate a virtual address to its paging components and viceversa
 - **x86 Exception Error Analyzer** to break down an exception-generated error code via an interactive and responsive bitfield viewer
+- **x86 Page Table Entry Visualizer** to check entry flags, available bits and the physical frame number
 
-### Contributing
+## Contributing
 Contributions, suggestions and additions are welcome! Check out [`src`](src) and [`src/modules`](src/modules) subdirectories to get an idea on the design to follow when implementing a new tool. The [`src/modules/common`](src/modules/common) subdirectory provides useful functions and classes to reuse. 
 In short, every tool must:
 - be in its own module subdirectory

@@ -247,13 +247,14 @@ export class Bitfield {
         this.container.innerHTML = '';
         const group = document.createElement('bitgroup');
 
-        const totalSize = schema.reduce((acc, field) => acc + (field.size || 1), 0);
+        const totalSize = schema.reduce((acc, field) => acc + (field.size ?? 1), 0);
         let currentBit = totalSize - 1;
         let firstField = true;
         
         schema.forEach(field => {
+            if (field.size === 0) return;
             const size = field.size || 1;
-            
+
             if (size === 1) {
                 const fieldEl = this.createSingleBitField(field, currentBit, '', firstField);
                 group.appendChild(fieldEl);
