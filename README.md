@@ -3,10 +3,10 @@
 <p align="center">
     An <b>offline-ready</b>, <b>responsive</b> and <b>data-driven</b> PWA featuring a collection of interactive web-based tools designed to assist hobbyist kernel developers and low-level programmers in decoding complex hardware structures, registers and error codes.
     <br><br>
-    <a href="https://c3-lang.org/"><img alt="GitHub License" src="https://img.shields.io/github/license/rickyadastra/osdev-tools"></a>
+    <a href="LICENSE.md"><img alt="GitHub License" src="https://img.shields.io/github/license/rickyadastra/osdev-tools"></a>
     <a href="https://tailwindcss.com/"><img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind_CSS-06b6d4?logo=tailwindcss&logoColor=white"></a>
-    <a href="https://tailwindcss.com/"><img alt="Basecoat" src="https://img.shields.io/badge/Basecoat-1447e6?logo=shadcnui&logoColor=white"></a>
-    <a href="https://tailwindcss.com/"><img alt="Vite" src="https://img.shields.io/badge/Vite-9135ff?logo=vite&logoColor=white"></a>
+    <a href="https://basecoatui.com/"><img alt="Basecoat" src="https://img.shields.io/badge/Basecoat-1447e6?logo=shadcnui&logoColor=white"></a>
+    <a href="https://vite.dev/"><img alt="Vite" src="https://img.shields.io/badge/Vite-9135ff?logo=vite&logoColor=white"></a>
     <br><br>
     <b><a align="center" href="https://rickyadastra.github.io/osdev-tools/">Try it here!</a></b>
 </p>
