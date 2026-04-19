@@ -1,3 +1,5 @@
+<!-- Test PR CI -->
+
 # OSDev Tools
 
 OSDev Tools is an **offline-ready**, **responsive** and **data-driven** PWA featuring a collection of interactive web-based tools designed to assist hobbyist kernel developers and low-level programmers in decoding complex hardware structures, registers and error codes.
