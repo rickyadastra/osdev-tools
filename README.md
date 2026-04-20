@@ -3,10 +3,12 @@
 <p align="center">
     An <b>offline-ready</b>, <b>responsive</b> and <b>data-driven</b> PWA featuring a collection of interactive web-based tools designed to assist hobbyist kernel developers and low-level programmers in decoding complex hardware structures, registers and error codes.
     <br><br>
-    <a href="LICENSE.md"><img alt="GitHub License" src="https://img.shields.io/github/license/rickyadastra/osdev-tools"></a>
-    <a href="https://tailwindcss.com/"><img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind_CSS-06b6d4?logo=tailwindcss&logoColor=white"></a>
+    <a href="https://tailwindcss.com/"><img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind-06b6d4?logo=tailwindcss&logoColor=white"></a>
     <a href="https://basecoatui.com/"><img alt="Basecoat" src="https://img.shields.io/badge/Basecoat-1447e6?logo=shadcnui&logoColor=white"></a>
     <a href="https://vite.dev/"><img alt="Vite" src="https://img.shields.io/badge/Vite-9135ff?logo=vite&logoColor=white"></a>
+    <br>
+    <a href="LICENSE.md"><img alt="GitHub License" src="https://img.shields.io/github/license/rickyadastra/osdev-tools"></a>
+    <img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/rickyadastra/osdev-tools?style=flat">
     <br><br>
     <b><a align="center" href="https://rickyadastra.github.io/osdev-tools/">Try it here!</a></b>
 </p>
@@ -20,14 +22,17 @@ Currently, it features the following tools:
 ## Get started
 To get the project running locally:
 1. Fork the repository and clone it to your local machine
-2. Create a new branch from `dev` following the strategy discussed above
-3. Install dependencies with `npm install --legacy-peer-deps`[^1] and start the Vite development server with `npm run dev`
+2. Install dependencies with `npm install --legacy-peer-deps`[^1] 
+3. Start the Vite development server with `npm run dev`
+
+Use `npm run build` to compile the PWA. 
+All source files will be output in the `dist` directory, which you can preview running `npm run preview`.
 
 [^1]: The `--legacy-peer-deps` option is required because of the `vite-plugin-pwa` dependency.
 
 ## Contributing
 OSDev Tools uses a data-driven architecture.
-You often just need to add your tool logic scripts and register it to the module system.
+You often just need to add your tool logic scripts and register it to the module system without having to edit core HTML and logic.
 Briefly exploring [`src`](src) and [`src/modules`](src/modules) is highly recommended in order to follow a consistent style across different tools.
 The [`src/modules/common`](src/modules/common) subdirectory provides useful functions and classes that you can reuse in your tool.
 
